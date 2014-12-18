@@ -2,6 +2,7 @@ package com.jacobbieker.myocameracontrol.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import java.io.IOException;
 
 public class CameraActivity extends Activity {
 
+    //private final int maxZoom = Camera.Parameters.getMaxZoom();
     private static final String TAG = "Myo";
     private static final String TAG_CAMERA_FRAGMENT = "camera_fragment";
     private Toast mToast;
@@ -53,6 +55,7 @@ public class CameraActivity extends Activity {
         }
         // Next, register for DeviceListener callbacks.
         hub.addListener(mListener);
+        hub.setLockingPolicy(Hub.LockingPolicy.NONE);
     }
 
     @Override
@@ -148,6 +151,7 @@ public class CameraActivity extends Activity {
 
     protected void zoom(double percentage) {
         CameraFragment f = (CameraFragment) getFragmentManager().findFragmentByTag(TAG_CAMERA_FRAGMENT);
+
         if (f.doesZoomReallyWork()) {
 
         }
@@ -218,20 +222,45 @@ public class CameraActivity extends Activity {
             showToast("Myo Locked");
         }
 
+        public int orientationCount;
+        public double initRoll;
+        public float initPitch;
+        public float initYaw;
+
+        public double rollDifference = 0.0;
+        public double percentageDifference;
+
+        public double finalRoll = 0.0;
+        public float finalPitch;
+        public float finalYaw;
+
         // onOrientationData() is called whenever a Myo provides its current orientation,
         // represented as a quaternion.
         @Override
         public void onOrientationData(Myo myo, long timestamp, Quaternion rotation) {
             // Calculate Euler angles (roll, pitch, and yaw) from the quaternion.
-            float roll = (float) Math.toDegrees(Quaternion.roll(rotation));
+            initRoll = Math.toDegrees(Quaternion.roll(rotation));
             float pitch = (float) Math.toDegrees(Quaternion.pitch(rotation));
             float yaw = (float) Math.toDegrees(Quaternion.yaw(rotation));
+
             // Adjust roll and pitch for the orientation of the Myo on the arm.
-            if (mXDirection == XDirection.TOWARD_ELBOW) {
+            /*if (mXDirection == XDirection.TOWARD_ELBOW) {
                 roll *= -1;
                 pitch *= -1;
-            }
+            }*/
 
+            rollDifference = initRoll - finalRoll;
+
+            percentageDifference = angleToPercentage(rollDifference);
+
+            finalRoll = initRoll;
+
+            //TODO: If Myo is rolled, find the percentage difference in the first and final position
+
+        }
+
+        public double angleToPercentage(double difference) {
+            return (difference/360.0);
         }
 
         // onPose() is called whenever a Myo provides a new pose.
@@ -264,7 +293,7 @@ public class CameraActivity extends Activity {
                     stopVideo();
                     break;
                 case FINGERS_SPREAD:
-                    zoom(.5);
+                    zoom(percentageDifference);
                     break;
             }
             if (pose != Pose.UNKNOWN && pose != Pose.REST) {
