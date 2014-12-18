@@ -148,13 +148,6 @@ public class CameraActivity extends Activity {
         }
     }
 
-    protected void zoom(double percentage) {
-        CameraFragment f = (CameraFragment) getFragmentManager().findFragmentByTag(TAG_CAMERA_FRAGMENT);
-        if (f.doesZoomReallyWork()) {
-            f.zoomTo((int)percentage);
-        }
-    }
-
     private void showToast(String text) {
         Log.w(TAG, text);
         if (mToast == null) {
@@ -220,45 +213,20 @@ public class CameraActivity extends Activity {
             showToast("Myo Locked");
         }
 
-        public int orientationCount;
-        public double initRoll;
-        public float initPitch;
-        public float initYaw;
-
-        public double rollDifference = 0.0;
-        public double percentageDifference;
-
-        public double finalRoll = 0.0;
-        public float finalPitch;
-        public float finalYaw;
-
         // onOrientationData() is called whenever a Myo provides its current orientation,
         // represented as a quaternion.
         @Override
         public void onOrientationData(Myo myo, long timestamp, Quaternion rotation) {
             // Calculate Euler angles (roll, pitch, and yaw) from the quaternion.
-            initRoll = Math.toDegrees(Quaternion.roll(rotation));
+            float roll = (float) Math.toDegrees(Quaternion.roll(rotation));
             float pitch = (float) Math.toDegrees(Quaternion.pitch(rotation));
             float yaw = (float) Math.toDegrees(Quaternion.yaw(rotation));
 
             // Adjust roll and pitch for the orientation of the Myo on the arm.
-            /*if (mXDirection == XDirection.TOWARD_ELBOW) {
+            if (mXDirection == XDirection.TOWARD_ELBOW) {
                 roll *= -1;
                 pitch *= -1;
-            }*/
-
-            rollDifference = initRoll - finalRoll;
-
-            percentageDifference = angleToPercentage(rollDifference);
-
-            finalRoll = initRoll;
-
-            //TODO: If Myo is rolled, find the percentage difference in the first and final position
-
-        }
-
-        public double angleToPercentage(double difference) {
-            return (difference/360.0) * 10;
+            }
         }
 
         // onPose() is called whenever a Myo provides a new pose.
@@ -291,7 +259,6 @@ public class CameraActivity extends Activity {
                     stopVideo();
                     break;
                 case FINGERS_SPREAD:
-                    zoom(percentageDifference);
                     break;
             }
             if (pose != Pose.UNKNOWN && pose != Pose.REST) {
