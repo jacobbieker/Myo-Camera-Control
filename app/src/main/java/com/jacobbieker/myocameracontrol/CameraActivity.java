@@ -33,6 +33,7 @@ public class CameraActivity extends Activity {
 
     private static final String TAG = "Myo";
     private static final String TAG_CAMERA_FRAGMENT = "camera_fragment";
+    private Toast mToast;
 
 
     @Override
@@ -150,6 +151,16 @@ public class CameraActivity extends Activity {
         }
     }
 
+    private void showToast(String text) {
+        Log.w(TAG, text);
+        if (mToast == null) {
+            mToast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        } else {
+            mToast.setText(text);
+        }
+        mToast.show();
+    }
+
     /**
      * Myo Armband specific callbacks. Basis taken from MyoHelloWorld app on the Thalmic Developer Docs
      */
@@ -162,12 +173,12 @@ public class CameraActivity extends Activity {
         // onConnect() is called whenever a Myo has been connected.
         @Override
         public void onConnect(Myo myo, long timestamp) {
-            // Set the text color of the text view to cyan when a Myo connects.
+            showToast("Myo Connected");
         }
         // onDisconnect() is called whenever a Myo has been disconnected.
         @Override
         public void onDisconnect(Myo myo, long timestamp) {
-            // Set the text color of the text view to red when a Myo disconnects.
+            showToast("Myo Disconnected");
         }
         // onArmSync() is called whenever Myo has recognized a Sync Gesture after someone has put it on their
         // arm. This lets Myo know which arm it's on and which way it's facing.
