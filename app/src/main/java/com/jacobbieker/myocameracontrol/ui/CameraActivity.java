@@ -151,9 +151,8 @@ public class CameraActivity extends Activity {
 
     protected void zoom(double percentage) {
         CameraFragment f = (CameraFragment) getFragmentManager().findFragmentByTag(TAG_CAMERA_FRAGMENT);
-
         if (f.doesZoomReallyWork()) {
-
+            f.zoomTo((int)percentage);
         }
     }
 
@@ -260,7 +259,7 @@ public class CameraActivity extends Activity {
         }
 
         public double angleToPercentage(double difference) {
-            return (difference/360.0);
+            return (difference/360.0) * 10;
         }
 
         // onPose() is called whenever a Myo provides a new pose.
