@@ -34,13 +34,13 @@ public class CameraActivity extends Activity {
     private static final String TAG = "Myo";
     private static final String TAG_CAMERA_FRAGMENT = "camera_fragment";
     private Toast mToast;
+    protected CameraFragment cameraFragment = new CameraFragment();
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        CameraFragment cameraFragment = new CameraFragment();
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, cameraFragment, TAG_CAMERA_FRAGMENT)
@@ -107,7 +107,7 @@ public class CameraActivity extends Activity {
      * Checks that the CameraFragment exists and is visible to the user,
      * then takes a picture.
      */
-    private void takePicture() {
+    protected void takePicture() {
         CameraFragment f = (CameraFragment) getFragmentManager().findFragmentByTag(TAG_CAMERA_FRAGMENT);
         if (f != null && f.isVisible()) {
             f.takePicture();
@@ -118,7 +118,7 @@ public class CameraActivity extends Activity {
      * Checks that the CameraFragment exists and is visible to the user,
      * then focuses camera.
      */
-    private void autoFocus() {
+    protected void autoFocus() {
         CameraFragment f = (CameraFragment) getFragmentManager().findFragmentByTag(TAG_CAMERA_FRAGMENT);
         if (f != null && f.isVisible() && f.isAutoFocusAvailable()) {
             f.autoFocus();
@@ -129,7 +129,7 @@ public class CameraActivity extends Activity {
      * Checks that the CameraFragment exists and is visible to the user,
      * then starts recording.
      */
-    private void takeVideo() throws Exception {
+    public void takeVideo() throws Exception {
         CameraFragment f = (CameraFragment) getFragmentManager().findFragmentByTag(TAG_CAMERA_FRAGMENT);
         if (f != null && f.isVisible()) {
             f.record();
@@ -140,7 +140,7 @@ public class CameraActivity extends Activity {
      * Checks that the CameraFragment exists and is visible to the user,
      * then stops recording.
      */
-    private void stopVideo() {
+    protected void stopVideo() {
         CameraFragment f = (CameraFragment) getFragmentManager().findFragmentByTag(TAG_CAMERA_FRAGMENT);
         if (f != null && f.isVisible()) {
             try {
@@ -170,23 +170,28 @@ public class CameraActivity extends Activity {
     private DeviceListener mListener = new AbstractDeviceListener() {
         private Arm mArm = Arm.UNKNOWN;
         private XDirection mXDirection = XDirection.UNKNOWN;
+
         // onConnect() is called whenever a Myo has been connected.
         @Override
         public void onConnect(Myo myo, long timestamp) {
             showToast("Myo Connected");
         }
+
         // onDisconnect() is called whenever a Myo has been disconnected.
         @Override
         public void onDisconnect(Myo myo, long timestamp) {
             showToast("Myo Disconnected");
         }
+
         // onArmSync() is called whenever Myo has recognized a Sync Gesture after someone has put it on their
         // arm. This lets Myo know which arm it's on and which way it's facing.
         @Override
         public void onArmSync(Myo myo, long timestamp, Arm arm, XDirection xDirection) {
             mArm = arm;
             mXDirection = xDirection;
+            showToast("Synced. Arm: " + arm + "Direction: " + xDirection);
         }
+
         // onArmUnsync() is called whenever Myo has detected that it was moved from a stable position on a person's arm after
         // it recognized the arm. Typically this happens when someone takes Myo off of their arm, but it can also happen
         // when Myo is moved around on the arm.
@@ -194,17 +199,23 @@ public class CameraActivity extends Activity {
         public void onArmUnsync(Myo myo, long timestamp) {
             mArm = Arm.UNKNOWN;
             mXDirection = XDirection.UNKNOWN;
+            showToast("Myo Unsynced.");
         }
+
         // onUnlock() is called whenever a synced Myo has been unlocked. Under the standard locking
         // policy, that means poses will now be delivered to the listener.
         @Override
         public void onUnlock(Myo myo, long timestamp) {
+            showToast("Myo unlocked");
         }
+
         // onLock() is called whenever a synced Myo has been locked. Under the standard locking
         // policy, that means poses will no longer be delivered to the listener.
         @Override
         public void onLock(Myo myo, long timestamp) {
+            showToast("Myo Locked");
         }
+
         // onOrientationData() is called whenever a Myo provides its current orientation,
         // represented as a quaternion.
         @Override
@@ -218,13 +229,12 @@ public class CameraActivity extends Activity {
                 roll *= -1;
                 pitch *= -1;
             }
-            // Next, we apply a rotation to the text view using the roll, pitch, and yaw.
         }
+
         // onPose() is called whenever a Myo provides a new pose.
         @Override
         public void onPose(Myo myo, long timestamp, Pose pose) {
-            // Handle the cases of the Pose enumeration, and change the text of the text view
-            // based on the pose we receive.
+            // Handle the cases of the Pose enumeration
             switch (pose) {
                 case UNKNOWN:
                     break;
@@ -232,10 +242,17 @@ public class CameraActivity extends Activity {
                 case DOUBLE_TAP:
                     break;
                 case FIST:
+                    takePicture();
                     break;
                 case WAVE_IN:
+                    try {
+                        takeVideo();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case WAVE_OUT:
+                    stopVideo();
                     break;
                 case FINGERS_SPREAD:
                     break;
