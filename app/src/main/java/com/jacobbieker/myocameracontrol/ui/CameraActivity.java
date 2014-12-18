@@ -1,4 +1,4 @@
-package com.jacobbieker.myocameracontrol;
+package com.jacobbieker.myocameracontrol.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.commonsware.cwac.camera.*;
 import com.commonsware.cwac.camera.CameraFragment;
+import com.jacobbieker.myocameracontrol.R;
 import com.thalmic.myo.AbstractDeviceListener;
 import com.thalmic.myo.Arm;
 import com.thalmic.myo.DeviceListener;
@@ -28,13 +29,13 @@ public class CameraActivity extends Activity {
     private static final String TAG = "Myo";
     private static final String TAG_CAMERA_FRAGMENT = "camera_fragment";
     private Toast mToast;
-    protected CameraFragment cameraFragment = new CameraFragment();
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+        setContentView(com.jacobbieker.myocameracontrol.R.layout.activity_camera);
+        CameraFragment cameraFragment = new CameraFragment();
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, cameraFragment, TAG_CAMERA_FRAGMENT)
