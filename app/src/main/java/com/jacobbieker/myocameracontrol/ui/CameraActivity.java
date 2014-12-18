@@ -146,6 +146,13 @@ public class CameraActivity extends Activity {
         }
     }
 
+    protected void zoom(double percentage) {
+        CameraFragment f = (CameraFragment) getFragmentManager().findFragmentByTag(TAG_CAMERA_FRAGMENT);
+        if (f.doesZoomReallyWork()) {
+
+        }
+    }
+
     private void showToast(String text) {
         Log.w(TAG, text);
         if (mToast == null) {
@@ -224,6 +231,7 @@ public class CameraActivity extends Activity {
                 roll *= -1;
                 pitch *= -1;
             }
+
         }
 
         // onPose() is called whenever a Myo provides a new pose.
@@ -235,6 +243,7 @@ public class CameraActivity extends Activity {
                     break;
                 case REST:
                 case DOUBLE_TAP:
+                    autoFocus();
                     break;
                 case FIST:
                     try {
@@ -255,7 +264,7 @@ public class CameraActivity extends Activity {
                     stopVideo();
                     break;
                 case FINGERS_SPREAD:
-                    autoFocus();
+                    zoom(.5);
                     break;
             }
             if (pose != Pose.UNKNOWN && pose != Pose.REST) {
