@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 20
+    buildToolsVersion "21.1.1"
+
+    defaultConfig {
+        applicationId "com.jacobbieker.myocameracontrol"
+        minSdkVersion 18
+        targetSdkVersion 20
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    repositories {
+        maven {
+            url "H:\\OneDrive\\Myo Development\\myo-android-sdk-beta4\\myo-android-sdk-0.9.0\\myorepository"
+            }
+        maven { url "https://repo.commonsware.com.s3.amazonaws.com" }
+    }
+    compile 'com.commonsware.cwac:camera:0.6.+'
+    compile('com.thalmic:myosdk:0.9.+@aar')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
