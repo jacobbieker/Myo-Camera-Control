@@ -86,7 +86,7 @@ public class CameraActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.help) {
             return true;
         }
         if (R.id.action_scan == id) {
@@ -254,6 +254,7 @@ public class CameraActivity extends Activity {
                     stopVideo();
                     break;
                 case FINGERS_SPREAD:
+                    autoFocus();
                     break;
             }
             if (pose != Pose.UNKNOWN && pose != Pose.REST) {

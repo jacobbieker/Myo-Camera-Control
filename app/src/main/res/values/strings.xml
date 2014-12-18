@@ -7,5 +7,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_camera">CameraActivity</string>
     <string name="action_scan">Scan</string>
+    <string name="help">Help</string>
 
 </resources>
