@@ -242,6 +242,11 @@ public class CameraActivity extends Activity {
                 case DOUBLE_TAP:
                     break;
                 case FIST:
+                    try {
+                        wait(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     takePicture();
                     break;
                 case WAVE_IN:
