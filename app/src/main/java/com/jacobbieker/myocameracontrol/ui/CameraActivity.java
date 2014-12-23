@@ -30,13 +30,15 @@ public class CameraActivity extends Activity {
     private static final String TAG = "Myo";
     private static final String TAG_CAMERA_FRAGMENT = "camera_fragment";
     private Toast mToast;
+    private CameraFragment cameraFragment;
+    private HelpFragment helpFragment;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.jacobbieker.myocameracontrol.R.layout.activity_camera);
-        CameraFragment cameraFragment = new CameraFragment();
+        cameraFragment = new CameraFragment();
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, cameraFragment, TAG_CAMERA_FRAGMENT)
@@ -90,6 +92,10 @@ public class CameraActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.help) {
+            getFragmentManager().beginTransaction()
+                    .remove(cameraFragment)
+                    .add(R.id.container, helpFragment, "help_fragment")
+                    .commit();
             return true;
         }
         if (R.id.action_scan == id) {
