@@ -92,10 +92,7 @@ public class CameraActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.help) {
-            getFragmentManager().beginTransaction()
-                    .remove(cameraFragment)
-                    .add(R.id.container, helpFragment, "help_fragment")
-                    .commit();
+            startActivity(new Intent(this, HelpActivity.class));
             return true;
         }
         if (R.id.action_scan == id) {

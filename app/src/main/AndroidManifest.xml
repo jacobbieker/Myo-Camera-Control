@@ -28,6 +28,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.jacobbieker.myocameracontrol.ui.HelpActivity"
+            android:label="Help"
+            android:parentActivityName="com.jacobbieker.myocameracontrol.ui.CameraActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jacobbieker.myocameracontrol.ui.CameraActivity" />
+        </activity>
     </application>
 
 </manifest>
