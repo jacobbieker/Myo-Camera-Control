@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Myo-Camera-Control.iml" filepath="$PROJECT_DIR$/Myo-Camera-Control.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyoCameraControl.iml" filepath="$PROJECT_DIR$/MyoCameraControl.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

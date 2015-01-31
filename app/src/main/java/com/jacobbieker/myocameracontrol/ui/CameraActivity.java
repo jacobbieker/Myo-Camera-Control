@@ -241,27 +241,29 @@ public class CameraActivity extends Activity {
                     break;
                 case REST:
                 case DOUBLE_TAP:
-                    autoFocus();
+                    if(cameraFragment.isAutoFocusAvailable()) {
+                        autoFocus();
+                    }
                     break;
                 case FIST:
-                    try {
-                        wait(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if(cameraFragment.isAutoFocusAvailable()) {
+                        takePicture();
                     }
-                    takePicture();
                     break;
                 case WAVE_IN:
-                    try {
-                        takeVideo();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if(cameraFragment.isAutoFocusAvailable()) {
+                        takePicture();
                     }
                     break;
                 case WAVE_OUT:
-                    stopVideo();
+                    if(cameraFragment.isAutoFocusAvailable()) {
+                        takePicture();
+                    }
                     break;
                 case FINGERS_SPREAD:
+                    if(cameraFragment.isAutoFocusAvailable()) {
+                        takePicture();
+                    }
                     break;
             }
             if (pose != Pose.UNKNOWN && pose != Pose.REST) {
