@@ -241,18 +241,19 @@ public class CameraActivity extends Activity {
                     break;
                 case REST:
                 case DOUBLE_TAP:
+                    break;
+                case FIST:
                     if(cameraFragment.isAutoFocusAvailable()) {
                         autoFocus();
                     }
                     break;
-                case FIST:
-                    if(cameraFragment.isAutoFocusAvailable()) {
-                        takePicture();
-                    }
-                    break;
                 case WAVE_IN:
                     if(cameraFragment.isAutoFocusAvailable()) {
-                        takePicture();
+                        try {
+                            takePicture();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     break;
                 case WAVE_OUT:
