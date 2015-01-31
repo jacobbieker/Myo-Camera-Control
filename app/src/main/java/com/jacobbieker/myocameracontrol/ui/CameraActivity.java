@@ -241,13 +241,16 @@ public class CameraActivity extends Activity {
                     break;
                 case REST:
                 case DOUBLE_TAP:
+                    showToast("Myo Double Tap");
                     break;
                 case FIST:
+                    showToast("Myo Fist");
                     if(cameraFragment.isAutoFocusAvailable()) {
                         autoFocus();
                     }
                     break;
                 case WAVE_IN:
+                    showToast("Myo Wave In");
                     if(cameraFragment.isAutoFocusAvailable()) {
                         try {
                             takePicture();
@@ -257,11 +260,13 @@ public class CameraActivity extends Activity {
                     }
                     break;
                 case WAVE_OUT:
+                    showToast("Myo Wave Out");
                     if(cameraFragment.isAutoFocusAvailable()) {
                         takePicture();
                     }
                     break;
                 case FINGERS_SPREAD:
+                    showToast("Myo Finger Spread");
                     if(cameraFragment.isAutoFocusAvailable()) {
                         takePicture();
                     }
